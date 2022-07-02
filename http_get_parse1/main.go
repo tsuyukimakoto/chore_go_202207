@@ -18,16 +18,24 @@ func main() {
 
 	tokenizer := html.NewTokenizer(resp.Body)
 	for {
-		tokenType := tokenizer.Next()
-		if tokenType == html.ErrorToken {
-			err := tokenizer.Err()
-			if err == io.EOF {
+		// tokenType := tokenizer.Next()
+		// if tokenType == html.ErrorToken {
+		// 	err := tokenizer.Err()
+		// 	if err == io.EOF {
+		// 		fmt.Println("Finish!")
+		// 		break
+		// 	}
+		// 	log.Fatalf("Error tokenize HTML: %v\n", tokenizer.Err())
+		// }
+
+		if tokenType := tokenizer.Next(); tokenType == html.ErrorToken {
+			if err := tokenizer.Err(); err == io.EOF {
 				fmt.Println("Finish!")
 				break
 			}
 			log.Fatalf("Error tokenize HTML: %v\n", tokenizer.Err())
 		}
-		
+
 		if tagName, hasAttr := tokenizer.TagName(); hasAttr {
 			fmt.Println("Tag: ", string(tagName))
 			for {
