@@ -51,6 +51,7 @@ func searchOgImage(targetUrl string) (url string, err error) {
 
 func main() {
 	url, err := searchOgImage("https://www.tsuyukimakoto.com/blog/2022/06/29/summer/")
+	// url, err := searchOgImage("https://www.tsuyukimakoto.com/") <- og:image無し
 	if err != nil {
 		log.Fatal(err)
 	}
