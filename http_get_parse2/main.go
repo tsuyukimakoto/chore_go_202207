@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"golang.org/x/net/html"
 )
@@ -22,10 +23,19 @@ func main() {
 
 	var traverse func(*html.Node)
 	traverse = func(n *html.Node) {
-		if n.Type == html.ElementNode {
-			fmt.Println("Tag -> ", n.Data)
+		if n.Type == html.ElementNode && n.Data == "meta" {
+			// fmt.Println("Tag -> ", n.Data)
+			fmt.Print("Found!")
+			og_image_found := false
 			for _, attr := range n.Attr {
-				fmt.Println("  Attr -> ", attr.Key, attr.Val)
+				if attr.Key == "property" && attr.Val ==  "og:image" {
+					og_image_found = true
+				}
+				if og_image_found && attr.Key == "content" {
+					fmt.Println("og:image -> ", attr.Val)
+					os.Exit(0)
+				}
+				// fmt.Println("  Attr -> ", attr.Key, attr.Val)
 			}
 		}
 		for child := n.FirstChild; child != nil; child = child.NextSibling {
